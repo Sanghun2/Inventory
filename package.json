@@ -1,0 +1,14 @@
+﻿{
+  "name": "com.billiotgames.inventory",
+  "version": "1.0.0",
+  "displayName": "Inventory",
+  "description": "Inventory를 관리하는 System",
+  "unity": "6000.2",
+  "author": {
+    "name": "Billiot Games",
+    "url": "https://github.com/Sanghun2/UIManager"
+  },
+  "keywords": [
+    "Inventory"
+  ]
+}
