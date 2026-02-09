@@ -26,7 +26,7 @@ namespace BilliotGames
         private SortedDictionary<int, ItemStack> usingItemSlotDict = new(); // 사용중인 목록
         private Dictionary<string, int> amountDict = new();
 
-        public SlotInventory(string inventoryID, int capacity) {
+        public SlotInventory(string inventoryID, int capacity) : base(inventoryID, capacity) {
             this.inventoryID = inventoryID;
             this.capacity = capacity;
             InitInventory();
