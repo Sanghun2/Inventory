@@ -10,9 +10,16 @@ namespace BilliotGames
     {
         public string ItemID => itemID;
         public int MaxStackAmount => maxStackAmount;
+        public int Amount => amount;
 
         [SerializeField] string itemID;
+        [SerializeField] int amount;
         [SerializeField] int maxStackAmount;
+
+        public ItemData (string itemID, int amount) {
+            this.itemID = itemID;
+            this.amount = amount;
+        }
 
         public bool Equals(ItemData other) {
             if (other == null) return false;
