@@ -6,13 +6,18 @@ using UnityEngine;
 namespace BilliotGames
 {
     [Serializable]
-    public class ItemData : IEquatable<ItemData>
+    public partial class ItemData : IEquatable<ItemData>
     {
         public string ItemID => itemID;
         public int MaxStackAmount => maxStackAmount;
 
         [SerializeField] string itemID;
         [SerializeField] int maxStackAmount;
+
+        public ItemData(string itemID, int maxStackAmount) {
+            this.itemID = itemID;
+            this.maxStackAmount = maxStackAmount;
+        }
 
         public bool Equals(ItemData other) {
             if (other == null) return false;
