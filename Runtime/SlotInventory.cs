@@ -8,7 +8,7 @@ using UnityEngine;
 namespace BilliotGames
 {
     [Serializable]
-    public class Inventory : InventoryBase
+    public class SlotInventory : InventoryBase
     {
         public enum SlotState
         {
@@ -26,7 +26,7 @@ namespace BilliotGames
         private SortedDictionary<int, ItemStack> usingItemSlotDict = new(); // 사용중인 목록
         private Dictionary<string, int> amountDict = new();
 
-        public Inventory(string inventoryID, int capacity) {
+        public SlotInventory(string inventoryID, int capacity) {
             this.inventoryID = inventoryID;
             this.capacity = capacity;
             InitInventory();
@@ -271,8 +271,8 @@ namespace BilliotGames
             //Debug.LogAssertion($"{targetID} 전체 수: {totalAmount}");
             return totalAmount;
         }
-        public void SwitchItemPosition(Inventory inventory1, int slotIndex1, int slotIndex2) {
-            Inventory inventory2 = this;
+        public void SwitchItemPosition(SlotInventory inventory1, int slotIndex1, int slotIndex2) {
+            SlotInventory inventory2 = this;
 
             (SlotState slotState, ItemStack itemStack) itemInfo1 = inventory1.GetSlotState(slotIndex1);
             (SlotState slotState, ItemStack itemStack) itemInfo2 = inventory2.GetSlotState(slotIndex2);
@@ -395,7 +395,7 @@ namespace BilliotGames
             }
         }
 
-        private void UpdateAmountDictRemove(Inventory targetInventory, ItemStack newItemStack) {
+        private void UpdateAmountDictRemove(SlotInventory targetInventory, ItemStack newItemStack) {
             if (targetInventory == null || newItemStack == null) return; 
             string itemID = newItemStack.ItemData.ItemID;
             if (targetInventory.amountDict.ContainsKey(itemID)) {
@@ -405,7 +405,7 @@ namespace BilliotGames
                 Debug.LogError($"<color=red>key가 없는 상태에서 삭제 시도. 이 상황에서는 key가 있다고 가정하기 때문에 오류가 있는지 확인 필요</color>");
             }
         }
-        private void UpdateAmountDictAdd(Inventory targetInventory, ItemStack newItemStack) {
+        private void UpdateAmountDictAdd(SlotInventory targetInventory, ItemStack newItemStack) {
             if (targetInventory == null || newItemStack == null) return;
             string itemID = newItemStack.ItemData.ItemID;
             if (targetInventory.amountDict.ContainsKey(itemID)) {
