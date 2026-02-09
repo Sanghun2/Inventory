@@ -8,15 +8,13 @@ using UnityEngine;
 namespace BilliotGames
 {
     [Serializable]
-    public class Inventory
+    public class Inventory : InventoryBase
     {
         public enum SlotState
         {
             Empty,
             Occupied,
         }
-
-        public int Capacity => capacity;
         public bool IsEmptySlotExist => emptyItemSlots.Count > 0;
 
         /// <summary>
@@ -24,28 +22,23 @@ namespace BilliotGames
         /// </summary>
         public IReadOnlyDictionary<int, ItemStack> UsingSlotDict => usingItemSlotDict;
 
-        public string InventoryID => inventoryID;
-
-        [SerializeField] string inventoryID;
-        [SerializeField] int capacity = 10;
         private SortedSet<int> emptyItemSlots = new(); // 사용중이지 않은 목록
         private SortedDictionary<int, ItemStack> usingItemSlotDict = new(); // 사용중인 목록
         private Dictionary<string, int> amountDict = new();
-        private bool isInit;
 
         public Inventory(string inventoryID, int capacity) {
             this.inventoryID = inventoryID;
-            InitCapacity(capacity);
+            this.capacity = capacity;
+            InitInventory();
         }
 
-        public void InitCapacity(int capacity) {
+        public override void InitInventory() {
             if (isInit) return;
 
             isInit = true;
-            this.capacity = capacity;
             ClearInventory(capacity);
         }
-        public void ClearInventory() {
+        public override void ClearInventory() {
             ClearInventory(capacity);
         }
 
@@ -57,7 +50,7 @@ namespace BilliotGames
         /// <param name="newItemStack">push할 item stack</param>
         /// <param name="overflowedStack">push하고 남은 item stack</param>
         /// <returns>true이면 itemstack이 모두 저장된 것이고 false인 경우 남은 slot이 없어 overflow된 것</returns>
-        public bool TryPushItem(ItemStack newItemStack, out ItemStack overflowedStack) {
+        public override bool TryPushItem(ItemStack newItemStack, out ItemStack overflowedStack) {
             overflowedStack = null;
             if (TryGetAvailableStack(newItemStack.ItemData.ItemID, out ItemStack availableStack)) {
                 switch (availableStack.MergeStack(newItemStack)) {
@@ -107,8 +100,8 @@ namespace BilliotGames
         /// <param name="itemID">pop할 아이템 id</param>
         /// <param name="targetAmount">pop할 양</param>
         /// <returns></returns>
-        public bool TryRemoveItem(string itemID, int targetAmount) {
-            if (PreviewItemAmount(itemID) >= targetAmount) {
+        public override bool TryRemoveItem(string itemID, int targetAmount) {
+            if (GetItemCount(itemID) >= targetAmount) {
                 List<int> deleteSlotList = new List<int>();
                 int currentAmount = 0;
                 foreach (var item in usingItemSlotDict) {
@@ -263,7 +256,7 @@ namespace BilliotGames
         /// <param name="itemID"></param>
         /// <param name="totalAmount"></param>
         /// <returns></returns>
-        public int PreviewItemAmount(string itemID) {
+        public override int GetItemCount(string itemID) {
             int totalAmount = 0;
 
             foreach (var item in usingItemSlotDict) {
@@ -422,5 +415,7 @@ namespace BilliotGames
                 targetInventory.amountDict[itemID] = newItemStack.Amount;
             }
         }
+
+
     }
 }
