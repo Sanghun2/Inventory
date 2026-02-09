@@ -12,6 +12,11 @@ namespace BilliotGames
         [SerializeField] protected string inventoryID;
         protected bool isInit;
 
+        public InventoryBase(string id, int capacitiy) {
+            inventoryID = id;
+            capacity = capacitiy;
+        }
+
         public abstract void InitInventory();
         public abstract void ClearInventory();
 
