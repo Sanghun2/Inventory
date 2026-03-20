@@ -7,16 +7,23 @@ namespace BilliotGames
     {
         public int Capacity => capacity;
         public string InventoryID => inventoryID;
+        public int SearchPriority => searchPriority;
 
         [SerializeField] protected int capacity;
         [SerializeField] protected string inventoryID;
+        [SerializeField] protected int searchPriority;
         protected bool isInit;
 
         public virtual event Action<ItemStack> OnItemAdded;
 
-        public InventoryBase(string id, int capacitiy) {
-            inventoryID = id;
-            capacity = capacitiy;
+        public InventoryBase(string id, int capacitiy, int searchPriority=5) {
+            this.inventoryID = id;
+            this.capacity = capacitiy;
+            this.searchPriority = searchPriority;
+        }
+
+        public void SetSearchPriority(int searchPriority) {
+            this.searchPriority = searchPriority;
         }
 
         public abstract void InitInventory();
