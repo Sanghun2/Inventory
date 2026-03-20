@@ -1,4 +1,4 @@
-﻿using System.Data;
+﻿using System;
 using UnityEngine;
 
 namespace BilliotGames
@@ -11,6 +11,8 @@ namespace BilliotGames
         [SerializeField] protected int capacity;
         [SerializeField] protected string inventoryID;
         protected bool isInit;
+
+        public virtual event Action<ItemStack> OnItemAdded;
 
         public InventoryBase(string id, int capacitiy) {
             inventoryID = id;
