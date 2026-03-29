@@ -14,7 +14,8 @@ namespace BilliotGames
         [SerializeField] protected int searchPriority;
         protected bool isInit;
 
-        public virtual event Action<ItemStack> OnItemAdded;
+        public virtual event Action<string, int> OnItemAdded;
+        public virtual event Action<string, int> OnItemRemoved;
 
         public InventoryBase(string id, int capacitiy, int searchPriority=5) {
             this.inventoryID = id;
