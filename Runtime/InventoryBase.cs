@@ -27,8 +27,13 @@ namespace BilliotGames
             this.tag = tag;
         }
 
-        public void SetSearchPriority(int searchPriority) {
+        public InventoryBase SetSearchPriority(int searchPriority) {
             this.searchPriority = searchPriority;
+            return this;
+        }
+        public InventoryBase SetTag(string tag) {
+            this.tag = tag;
+            return this;
         }
 
         public abstract void InitInventory();
