@@ -50,7 +50,10 @@ namespace BilliotGames
 
                 _amount = value < 0 ? 0 : value;
                 OnAmountChanged?.Invoke(this, _amount-prevAmount);
-                if (_amount <= 0) ReleaseItem();
+                if (_amount <= 0) {
+                    OnItemRemoved?.Invoke();
+                    ReleaseItem(); 
+                }
             }
         }
 
@@ -60,7 +63,7 @@ namespace BilliotGames
 
         public delegate void ItemHandler(ItemStack itemStack, int deltaAmount);
         public event ItemHandler OnAmountChanged;
-
+        public virtual event Action OnItemRemoved;
 
         public ItemStack(ItemData itemData, int amount) {
             this._itemData = itemData;
@@ -114,6 +117,7 @@ namespace BilliotGames
 
         public bool TryRemoveStack(int removeAmount, bool allowOverflow=false) {
             if (removeAmount < 0) return false;
+
             if (!allowOverflow) {
                 if (removeAmount > Amount) {
                     Debug.LogAssertion($"remove amount가 현재 amount 보다 많음");
