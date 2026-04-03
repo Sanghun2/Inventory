@@ -1,6 +1,6 @@
 ﻿{
   "name": "com.billiotgames.inventory",
-  "version": "1.8.0",
+  "version": "1.8.1",
   "displayName": "Inventory",
   "description": "Inventory를 관리하는 System",
   "unity": "6000.2",
