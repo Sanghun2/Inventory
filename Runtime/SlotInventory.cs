@@ -25,6 +25,11 @@ namespace BilliotGames
         private SortedDictionary<int, ItemStack> usingItemSlotDict = new(); // 사용중인 목록
         private Dictionary<string, int> amountDict = new();
 
+        public override event Action<ItemEventArgs> OnItemAdded;
+        public override event Action<ItemEventArgs> OnItemMerged;
+        public override event Action<ItemEventArgs> OnItemRemoved;
+        public override event Action<ItemEventArgs> OnItemChanged;
+
         public SlotInventory(string inventoryID, int capacity) : base(inventoryID, capacity) {
             this.inventoryID = inventoryID;
             this.capacity = capacity;
@@ -54,7 +59,8 @@ namespace BilliotGames
             if (TryGetAvailableStack(newItemStack.ItemData.ItemID, out ItemStack availableStack)) {
                 switch (availableStack.MergeStack(newItemStack)) {
                     case ItemStack.MergeResult.Success:
-
+                        OnItemMerged?.Invoke(new ItemEventArgs(newItemStack.ItemData.ItemID, newItemStack.Amount, -1));
+                        OnItemChanged?.Invoke(new ItemEventArgs(newItemStack.ItemData.ItemID, newItemStack.Amount, -1));
                         return true;
                     case ItemStack.MergeResult.Failed_DifferentItemType:
                         Debug.LogError($"<color=red>item push에서는 나오면 안되는 로직 흐름</color>");
@@ -176,10 +182,16 @@ namespace BilliotGames
         public bool TryRemoveItem(ItemStack removeTarget, int removeAmount) {
             foreach (var itemPair in usingItemSlotDict) {
                 if (removeTarget.Equals(itemPair.Value)) {
-                    //Debug.LogAssertion($"일치하는 stack = {itemPair.Value.GetHashCode()}");
                     if (removeAmount <= removeTarget.Amount) {
                         removeTarget.TryRemoveStack(removeAmount);
-                        if (removeTarget.Amount == 0) { ReleaseSlot(itemPair.Key); }
+
+                        if (removeTarget.Amount == 0) {
+                            ReleaseSlot(itemPair.Key); // ReleaseSlot 안에서 Removed + Changed 발동
+                        }
+                        else {
+                            OnItemRemoved?.Invoke(new ItemEventArgs(removeTarget.ItemData.ItemID, -removeAmount, itemPair.Key));
+                            OnItemChanged?.Invoke(new ItemEventArgs(removeTarget.ItemData.ItemID, -removeAmount, itemPair.Key));
+                        }
                         return true;
                     }
 
@@ -210,6 +222,9 @@ namespace BilliotGames
             int index = (int)targetIndex;
             if (usingItemSlotDict.TryGetValue(index, out ItemStack targetStack)) {
                 targetStack.OnAmountChanged -= OnItemAmountChanged;
+
+                OnItemRemoved?.Invoke(new ItemEventArgs(targetStack.ItemData.ItemID, targetStack.Amount, index));
+                OnItemChanged?.Invoke(new ItemEventArgs(targetStack.ItemData.ItemID, targetStack.Amount, index));
             }
             usingItemSlotDict.Remove(index);
             emptyItemSlots.Add(index);
@@ -222,9 +237,11 @@ namespace BilliotGames
             emptyItemSlots.Remove(slotIndex);
             newItemStack.OnAmountChanged += OnItemAmountChanged;
             UpdateAmountDictAdd(this, newItemStack);
+
+            OnItemAdded?.Invoke(new ItemEventArgs(newItemStack.ItemData.ItemID, newItemStack.Amount, slotIndex));
+            OnItemChanged?.Invoke(new ItemEventArgs(newItemStack.ItemData.ItemID, newItemStack.Amount, slotIndex));
             return true;
         }
-
 
         #endregion
 

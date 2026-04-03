@@ -16,9 +16,10 @@ namespace BilliotGames
         [SerializeField] protected string tag;
         protected bool isInit;
 
-        public virtual event Action<ItemStack, int> OnItemAdded;
-        public virtual event Action<ItemStack, int> OnItemMerged;
-        public virtual event Action<ItemStack, int> OnItemRemoved;
+        public virtual event Action<ItemEventArgs> OnItemAdded;
+        public virtual event Action<ItemEventArgs> OnItemMerged;
+        public virtual event Action<ItemEventArgs> OnItemRemoved;
+        public virtual event Action<ItemEventArgs> OnItemChanged;
 
         public InventoryBase(string id, int capacitiy, string tag="none", int searchPriority=5) {
             this.inventoryID = id;
