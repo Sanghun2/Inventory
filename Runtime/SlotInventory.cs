@@ -432,6 +432,8 @@ namespace BilliotGames
             }
         }
 
-
+        public override int RemoveItemPartial(string itemID, int requestAmount) {
+            throw new NotImplementedException();
+        }
     }
 }
