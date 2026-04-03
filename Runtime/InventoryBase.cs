@@ -43,5 +43,6 @@ namespace BilliotGames
         public abstract bool TryPushItem(ItemStack inputStack, out ItemStack overflowedStack);
         public abstract bool TryRemoveItem(string itemID, int targetAmount);
         public abstract int GetItemCount(string itemID);
+        public abstract int RemoveItemPartial(string itemID, int requestAmount);
     }
 }
