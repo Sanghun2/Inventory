@@ -54,7 +54,7 @@ namespace BilliotGames
         /// <param name="newItemStack">push할 item stack</param>
         /// <param name="overflowedStack">push하고 남은 item stack</param>
         /// <returns>true이면 itemstack이 모두 저장된 것이고 false인 경우 남은 slot이 없어 overflow된 것</returns>
-        public override bool TryPushItem(ItemStack newItemStack, out ItemStack overflowedStack) {
+        public override bool TryPushItem(ItemStack newItemStack, out ItemStack overflowedStack, bool ignoreConditions = false) {
             overflowedStack = null;
             if (TryGetAvailableStack(newItemStack.ItemData.ItemID, out ItemStack availableStack)) {
                 switch (availableStack.MergeStack(newItemStack)) {
