@@ -2,6 +2,7 @@
 {
     public interface IPushCondition
     {
-        bool CanPush(ItemStack item);
+        bool CanPush(ItemStack item); 
+        int GetAllowedAmount(ItemStack item);
     }
 }
