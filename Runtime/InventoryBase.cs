@@ -10,9 +10,11 @@ namespace BilliotGames
         public string InventoryID => inventoryID;
         public int SearchPriority => searchPriority;
         public string Tag => tag;
+        public string DisplayName => displayName;
 
         [SerializeField] protected int capacity;
         [SerializeField] protected string inventoryID;
+        [SerializeField] protected string displayName;
         [SerializeField] protected int searchPriority;
         [SerializeField] protected string tag;
         protected List<IPushCondition> pushConditions = new List<IPushCondition>();
@@ -23,11 +25,12 @@ namespace BilliotGames
         public virtual event Action<ItemEventArgs> OnItemRemoved;
         public virtual event Action<ItemEventArgs> OnItemChanged;
 
-        public InventoryBase(string id, int capacitiy, string tag = "none", int searchPriority = 5) {
+        public InventoryBase(string id, int capacitiy, string tag = "none", int searchPriority = 5, string displayName="") {
             this.inventoryID = id;
             this.capacity = capacitiy;
             this.searchPriority = searchPriority;
             this.tag = tag;
+            this.displayName = displayName;
         }
 
 
