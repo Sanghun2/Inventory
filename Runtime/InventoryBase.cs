@@ -64,7 +64,7 @@ namespace BilliotGames
         public abstract void InitInventory();
         public abstract void ClearInventory();
 
-        public abstract bool TryPushItem(ItemStack inputStack, out ItemStack overflowedStack, bool ignoreConditions = false);
+        public abstract bool TryPushItem(ItemStack inputStack, out ItemStack overflowedStack, bool ignorePushConditions = false);
         public abstract bool TryRemoveItem(string itemID, int targetAmount);
         public abstract int RemoveItemPartial(string itemID, int requestAmount);
         public abstract int GetItemCount(string itemID);
